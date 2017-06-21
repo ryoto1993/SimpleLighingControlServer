@@ -1,0 +1,9 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="KC-104_LightingSystem:jar">
+    <output-path>$PROJECT_DIR$/out/artifacts/KC_104_LightingSystem_jar</output-path>
+    <root id="archive" name="KC-104_LightingSystem.jar">
+      <element id="module-output" name="KC-104_LightingSystem" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/RXTXcomm.jar" path-in-jar="/" />
+    </root>
+  </artifact>
+</component>
