@@ -7,15 +7,15 @@ public class ILS {
     private ArrayList<Light> lights = new ArrayList<>();
     private ArrayList<Sensor> sensors = new ArrayList<>();
     public SocketServer socketServer;
-    public InterfaceDimmer interfaceDimmer;
+    public DownlightDimmer downlightDimmer;
 
     public ILS() {
-        // Server作成
+        // start server
         socketServer = new SocketServer(this);
         socketServer.start();
 
-        // Dimemr作成
-        interfaceDimmer = new InterfaceDimmer(lights);
+        // make dimmer object
+        downlightDimmer = new DownlightDimmer(lights);
     }
     public void makeLight(int num) {
         for(int i=0; i<num; i++) {

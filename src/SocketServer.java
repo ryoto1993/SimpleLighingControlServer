@@ -9,7 +9,7 @@ import java.util.ArrayList;
  * Created by RyotoTomioka on 2017/06/12.
  */
 public class SocketServer extends Thread{
-    static final int PORT = 44344;
+    static final int PORT = 54321;
     static private ILS ils;
 
     public SocketServer(ILS ils) {
@@ -98,7 +98,7 @@ public class SocketServer extends Thread{
             }
         }
         // 調光
-        ils.interfaceDimmer.send();
+        ils.downlightDimmer.send();
     }
 
     // 全照明独立 信号値指定調光
@@ -115,7 +115,7 @@ public class SocketServer extends Thread{
                 s.remove(0);
             }
         }
-        ils.interfaceDimmer.send();
+        ils.downlightDimmer.send();
     }
 
     // 照明ID・信号値指定調光
@@ -129,7 +129,7 @@ public class SocketServer extends Thread{
             System.out.println(s.get(0));
             ils.getLight(s.get(0)).setSignal(s.get(1), s.get(2));
         }
-        ils.interfaceDimmer.send();
+        ils.downlightDimmer.send();
     }
 
 
