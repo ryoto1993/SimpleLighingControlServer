@@ -98,7 +98,7 @@ public class SocketServer extends Thread{
             }
         }
         // 調光
-        ils.dimmer.send();
+        ils.interfaceDimmer.send();
     }
 
     // 全照明独立 信号値指定調光
@@ -115,7 +115,7 @@ public class SocketServer extends Thread{
                 s.remove(0);
             }
         }
-        ils.dimmer.send();
+        ils.interfaceDimmer.send();
     }
 
     // 照明ID・信号値指定調光
@@ -129,7 +129,7 @@ public class SocketServer extends Thread{
             System.out.println(s.get(0));
             ils.getLight(s.get(0)).setSignal(s.get(1), s.get(2));
         }
-        ils.dimmer.send();
+        ils.interfaceDimmer.send();
     }
 
 
