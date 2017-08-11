@@ -116,7 +116,7 @@ public class DownlightDimmer implements Runnable{
 
         for(Light l: lights) {
             // illuminance
-            data.add(0x15);
+            data.add(0x00);
             // color temperature
             data.add(0x00);
             // duration
