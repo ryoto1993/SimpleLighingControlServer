@@ -12,21 +12,33 @@ import java.util.ArrayList;
  #
  # coded by Ryoto Tomioka @20th
  # 2017/08/07
+ *
+ * NOTE:
+ * By use this class as thread,
+ * you can send signals every 1 second.
+ * If you want to send signal from out side of thread
+ * you should use this class as non-thread class.
+ *
  */
 
-public class DownlightDimmer {
+public class DownlightDimmer implements Runnable{
     // Light object
     private ArrayList<Light> lights;
     // data
     private ArrayList<Integer> data;
     // sequence number
-    private int seq = 0x00;
+    private static int SEQ = 0x00;
     // COM port name
-    private static String com = "COM1";
+    private static String com = "COM5";
     // COM port
     private CommPortIdentifier portId;
     private SerialPort port;
     private OutputStream out;
+
+    // send signals every 1 seconds.
+    public void run() {
+
+    }
 
     public DownlightDimmer(ArrayList<Light> lights) {
         this.lights = lights;
@@ -41,7 +53,7 @@ public class DownlightDimmer {
         }
     }
 
-    public void send() {
+    synchronized public void send() {
         // byte data
         data = new ArrayList<>();
 
@@ -50,7 +62,7 @@ public class DownlightDimmer {
         // ADR
         data.add(0x01);
         // SEQ
-        data.add(seq);
+        data.add(SEQ);
         // CMD
         data.add(0x02);
         // LEN
@@ -62,7 +74,6 @@ public class DownlightDimmer {
         makeCheckBit();
         // ENC
         data.add(0xF0);
-
 
         // for debug
         for (int i : data) {

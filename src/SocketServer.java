@@ -9,7 +9,7 @@ import java.util.ArrayList;
  * Created by RyotoTomioka on 2017/06/12.
  */
 public class SocketServer extends Thread{
-    static final int PORT = 54321;
+    static final int PORT = 44344;
     static private ILS ils;
 
     public SocketServer(ILS ils) {
