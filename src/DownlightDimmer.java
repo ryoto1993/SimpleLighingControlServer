@@ -37,7 +37,15 @@ public class DownlightDimmer implements Runnable{
 
     // send signals every 1 seconds.
     public void run() {
+        while (true) {
+            // send
+            send();
 
+            // sleep
+            try {
+                Thread.sleep(1000);
+            } catch (InterruptedException e) {}
+        }
     }
 
     public DownlightDimmer(ArrayList<Light> lights) {
@@ -90,7 +98,13 @@ public class DownlightDimmer implements Runnable{
             ex.printStackTrace();
         }
 
+        // ToDo: for debug
         System.out.println();
+
+        SEQ++;
+        if(SEQ>0xFF) {
+            SEQ = 0x00;
+        }
     }
 
     // make data bit from Arraylist<Light>
@@ -102,7 +116,7 @@ public class DownlightDimmer implements Runnable{
 
         for(Light l: lights) {
             // illuminance
-            data.add(0x00);
+            data.add(0x15);
             // color temperature
             data.add(0x00);
             // duration
@@ -119,8 +133,8 @@ public class DownlightDimmer implements Runnable{
     private void makeCheckBit() {
         int cb = 0x00;
 
-        for (int i=0; i<data.size()-4; i++) {
-            cb = data.get(3+i) ^ data.get(3+i + 1);
+        for (int i=0; i<data.size()-3; i++) {
+            cb = data.get(3+i) ^ cb;
         }
 
         data.add(cb);

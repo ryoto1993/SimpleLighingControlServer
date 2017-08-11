@@ -10,12 +10,9 @@ public class ILS {
     public DownlightDimmer downlightDimmer;
 
     public ILS() {
-        // start server
-        socketServer = new SocketServer(this);
-        socketServer.start();
-
         // make dimmer object
         downlightDimmer = new DownlightDimmer(lights);
+
     }
     public void makeLight(int num) {
         for(int i=0; i<num; i++) {
@@ -26,6 +23,15 @@ public class ILS {
         for(int i=0; i<num; i++) {
             sensors.add(new Sensor());
         }
+    }
+
+    public void startServer() {
+        // start server
+        socketServer = new SocketServer(this);
+        socketServer.start();
+    }
+    public void startDimmer() {
+        downlightDimmer.run();
     }
     public ArrayList<Light> getLights() {
         return lights;
