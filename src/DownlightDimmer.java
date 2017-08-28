@@ -75,7 +75,7 @@ public class DownlightDimmer implements Runnable{
         data.add(0x02);
         // LEN
         data.add(0x00);
-        data.add(0xC8);
+        data.add(0xC0);
         // DATA
         makeData();
         // CB
@@ -85,7 +85,9 @@ public class DownlightDimmer implements Runnable{
 
         // for debug
         for (int i : data) {
-            System.out.print(i + ", ");
+            // ToDo: for debug
+            String hex = String.format("%02x", i);
+            System.out.print(hex + ", ");
         }
 
         // send data into RS485
@@ -103,7 +105,7 @@ public class DownlightDimmer implements Runnable{
 
         SEQ++;
         if(SEQ>0xFF) {
-            SEQ = 0x00;
+            SEQ = 0x01;
         }
     }
 
@@ -116,17 +118,19 @@ public class DownlightDimmer implements Runnable{
 
         for(Light l: lights) {
             // illuminance
-            data.add(0x00);
+            data.add(convertLumToHex(l.getLumPct()));
             // color temperature
-            data.add(0x00);
+            data.add(convertTmpToHex(l.getTemperature()));
             // duration
-            data.add(0x00);
+            data.add(0x0A);
         }
 
-        // fill 0x00 in data command section
-        for(int i=0; i<200-lights.size()*3; i++) {
-            data.add(0x00);
-        }
+        /**
+         *
+         * Ryoto Tomioka, 2017/08/24
+         * Deleted extra 8 byte 0xFF
+         *
+         **/
     }
 
     // calc Check Bit from data
@@ -138,6 +142,16 @@ public class DownlightDimmer implements Runnable{
         }
 
         data.add(cb);
+    }
+
+    // convert luminous percent to hex
+    private int convertLumToHex(double luminance_signal) {
+        return (int)(luminance_signal / 0.5 * 0x01);
+    }
+
+    // convert color temperature to hex sig
+    private int convertTmpToHex(double temp) {
+        return (int)((temp-1550)/50 * 0x01);
     }
 }
 

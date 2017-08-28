@@ -5,7 +5,7 @@ public class Manager {
     public static void main(String[] args) {
         // ILSを作成
         ILS ils = new ILS();
-        ils.makeLight(36);
+        ils.makeLight(64);
         ils.startDimmer();
         ils.startServer();
     }

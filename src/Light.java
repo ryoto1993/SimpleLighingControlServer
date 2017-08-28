@@ -12,6 +12,9 @@ public class Light {
     private double luminosityA = 0;  // 白色光度
     private double luminosityB = 0;  // 電球色光度
 
+    private double temperature = 4000;  // 色温度
+    private double lumPct = 3;        // 光度パーセント
+
     public Light() {
         id = id_counter++;
     }
@@ -21,16 +24,12 @@ public class Light {
         signalB = b;
     }
 
-    public int getId() {
-        return id;
+    public double getLumPct() {
+        return lumPct;
     }
 
-    public void setSignalA(int a) {
-        signalA = a;
-    }
-
-    public void setSignalB(int b) {
-        signalB = b;
+    public double getTemperature() {
+        return temperature;
     }
 
     public int[] getSignal() {
