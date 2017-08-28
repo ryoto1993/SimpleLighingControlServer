@@ -34,6 +34,7 @@ public class ILS {
         downlightDimmer.start();
 
     }
+
     public ArrayList<Light> getLights() {
         return lights;
     }

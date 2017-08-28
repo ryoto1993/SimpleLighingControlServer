@@ -94,12 +94,14 @@ public class SocketServer extends Thread{
             ArrayList<Integer> s = new ArrayList<>();
             String[] buf = sigs.split(",");
             for(String i:buf) s.add(Integer.parseInt(i));
-            for(int i=0; i<ils.getLights().size(); i++) {
-                ils.getLights().get(i).setSignal(s.get(0), s.get(1));
+            for(Light l: ils.getLights()) {
+                l.setLumPct((double)s.get(0)/255.0*100.0);
+                l.setSignal(s.get(0), s.get(1));
             }
         }
         // 調光
         ils.downlightDimmer.send();
+
     }
 
     // 全照明独立 信号値指定調光

@@ -24,6 +24,10 @@ public class Light {
         signalB = b;
     }
 
+    public void setLumPct(double pct) {this.lumPct = pct;}
+
+    public void setTemperature(double tmp) {this.temperature = tmp;}
+
     public double getLumPct() {
         return lumPct;
     }
