@@ -18,6 +18,7 @@ public class SocketServer extends Thread{
     @Override
     public void run() {
         ServerSocket serverSocket = null;
+        System.out.println("Server: listening");
 
         try {
             serverSocket = new ServerSocket(PORT);

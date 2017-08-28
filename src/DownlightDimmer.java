@@ -21,7 +21,7 @@ import java.util.ArrayList;
  *
  */
 
-public class DownlightDimmer implements Runnable{
+public class DownlightDimmer extends Thread{
     // Light object
     private ArrayList<Light> lights;
     // data

@@ -31,7 +31,8 @@ public class ILS {
         socketServer.start();
     }
     public void startDimmer() {
-        downlightDimmer.run();
+        downlightDimmer.start();
+
     }
     public ArrayList<Light> getLights() {
         return lights;
