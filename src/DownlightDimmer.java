@@ -84,11 +84,13 @@ public class DownlightDimmer extends Thread{
         data.add(0xF0);
 
         // for debug
+        /*
         for (int i : data) {
-            // ToDo: for debug
             String hex = String.format("%02x", i);
             System.out.print(hex + ", ");
         }
+        System.out.println();
+        */
 
         // send data into RS485
         try{
@@ -100,8 +102,6 @@ public class DownlightDimmer extends Thread{
             ex.printStackTrace();
         }
 
-        // ToDo: for debug
-        System.out.println();
 
         SEQ++;
         if(SEQ>0xFF) {
@@ -109,7 +109,7 @@ public class DownlightDimmer extends Thread{
         }
     }
 
-    // make data bit from Arraylist<Light>
+    // make data bit from ArrayList<Light>
     private void makeData() {
         if(lights.size() > 64) {
             System.out.println("ERROR! 0x10: Number of lights is too much (over 64).");
@@ -122,15 +122,15 @@ public class DownlightDimmer extends Thread{
             // color temperature
             data.add(convertTmpToHex(l.getTemperature()));
             // duration
-            data.add(0x0A);
+            data.add(0x00);
         }
 
-        /**
-         *
-         * Ryoto Tomioka, 2017/08/24
-         * Deleted extra 8 byte 0xFF
-         *
-         **/
+        for(int i=0; i<64-lights.size(); i++) {
+            data.add(0x00);
+            data.add(0x00);
+            data.add(0x00);
+        }
+
     }
 
     // calc Check Bit from data
