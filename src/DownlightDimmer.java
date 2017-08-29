@@ -105,7 +105,7 @@ public class DownlightDimmer extends Thread{
 
         SEQ++;
         if(SEQ>0xFF) {
-            SEQ = 0x01;
+            SEQ = 0x00;
         }
     }
 

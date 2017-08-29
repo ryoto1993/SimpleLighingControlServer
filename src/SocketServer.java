@@ -22,8 +22,7 @@ public class SocketServer extends Thread{
 
         try {
             serverSocket = new ServerSocket(PORT);
-            boolean runFlag = true;
-            while(runFlag){
+            while(true){
                 // System.out.println("Listening...");
                 // 接続があるまでブロック
                 Socket socket = serverSocket.accept();
@@ -33,10 +32,6 @@ public class SocketServer extends Thread{
                 ArrayList<String> cmd = new ArrayList<>();
                 String in;
                 while( (in = br.readLine()) != null ){
-                    // exitという文字列を受け取ったら終了する
-                    if( "exit".equals(in)){
-                        runFlag = false;
-                    }
                     // コマンドに追加
                     cmd.add(in);
                 }
@@ -88,6 +83,7 @@ public class SocketServer extends Thread{
             case "DOWNLIGHT_INDIVIDUAL":
                 System.out.println("Downlight: Individual control");
                 downlightIndividual(cmd.get(1));
+                break;
             default:
                 System.out.println("Error: 不明なmode command");
         }
@@ -181,8 +177,8 @@ public class SocketServer extends Thread{
             String[] buf = cmd.split(",");
             if(buf.length % 3 != 0) {printError("invalid number of data.");}
 
-            for(int i=0; i<buf.length; i++) {
-                int n = i/3;
+            for(int i=0; i<buf.length/3; i++) {
+                int n = i*3;
                 try {
                     id.add(Integer.parseInt(buf[n]));
                     lumPct.add(Double.parseDouble(buf[n + 1]));
@@ -198,11 +194,15 @@ public class SocketServer extends Thread{
                 Light light = ils.getLight(id.get(0));
                 light.setLumPct(lumPct.get(0));
                 light.setTemperature(temp.get(0));
+
                 // remove data from array list
                 id.remove(0);
                 lumPct.remove(0);
                 temp.remove(0);
             }
+
+            // dimming
+            ils.downlightDimmer.send();
 
         }
     }
