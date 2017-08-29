@@ -58,10 +58,24 @@ public class SocketServer extends Thread{
         }
     }
 
-    // エラーの実装
+    // send message to client
+    private void sendMessage(String str) {
+        System.out.println(str);
+        try {
+            OutputStream output = socket.getOutputStream();
+            BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(output));
+            bw.write(str);
+            bw.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    // error
     private void printError(String err) {
-        System.out.print("ERROR: ");
-        System.out.println(err);
+        String str = "ERROR; ";
+        str += err;
+        sendMessage(str);
     }
 
     // 動作コマンドの実装
@@ -235,15 +249,7 @@ public class SocketServer extends Thread{
         }
 
         // output
-        System.out.println(json);
-        try {
-            OutputStream output = socket.getOutputStream();
-            BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(output));
-            bw.write(json);
-            bw.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        sendMessage(json);
     }
 
 
