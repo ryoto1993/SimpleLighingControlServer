@@ -81,6 +81,13 @@ public class SocketServer extends Thread{
             case "MANUAL_ID-RELATIVE":
                 System.out.println("照明ID・相対信号値指定調光");
                 break;
+            case "DOWNLIGHT_ALL":
+                System.out.println("Downlight: All Control");
+                downlightAll(cmd.get(1));
+                break;
+            case "DOWNLIGHT_INDIVIDUAL":
+                System.out.println("Downlight: Individual control");
+                downlightIndividual(cmd.get(1));
             default:
                 System.out.println("Error: 不明なmode command");
         }
@@ -135,5 +142,74 @@ public class SocketServer extends Thread{
         ils.downlightDimmer.send();
     }
 
+    /**
+     * ダウンライト用 一律調光
+     * @author Ryoto Tomioka
+     * @param cmd コマンドのデータコマンド部分
+     * <p>フォーマット: [調光率(0.5%刻み)], [色温度]</p>
+     */
+    private void downlightAll(String cmd) {
+        if(cmd == null) {
+            printError("Check for data command.");
+        } else {
+            ArrayList<Double> data = new ArrayList<>();
+            String[] buf = cmd.split(",");
+            for(String i:buf) data.add(Double.parseDouble(i));
+            for(Light l: ils.getLights()) {
+                l.setLumPct(data.get(0));
+                l.setTemperature(data.get(1));
+            }
+        }
+        // dimming
+        ils.downlightDimmer.send();
+    }
+
+    /**
+     * ダウンライト用 ID指定調光
+     * @author Ryoto Tomioka
+     * @param cmd コマンドのデータコマンド部分
+     * <p>フォーマット: [ID], [調光率(0.5%刻み)], [色温度] の繰り返し</p>
+     */
+    private void downlightIndividual(String cmd) {
+        if(cmd == null) {
+            printError("Check for data command.");
+        } else {
+            ArrayList<Integer> id = new ArrayList<>();
+            ArrayList<Double> lumPct = new ArrayList<>();
+            ArrayList<Integer> temp = new ArrayList<>();
+
+            String[] buf = cmd.split(",");
+            if(buf.length % 3 != 0) {printError("invalid number of data.");}
+
+            for(int i=0; i<buf.length; i++) {
+                int n = i/3;
+                try {
+                    id.add(Integer.parseInt(buf[n]));
+                    lumPct.add(Double.parseDouble(buf[n + 1]));
+                    temp.add(Integer.parseInt(buf[n + 2]));
+                } catch (Exception e) {
+                    printError(e.getMessage());
+                    return;
+                }
+            }
+
+            while (id.size() > 0) {
+                // update light object
+                Light light = ils.getLight(id.get(0));
+                light.setLumPct(lumPct.get(0));
+                light.setTemperature(temp.get(0));
+                // remove data from array list
+                id.remove(0);
+                lumPct.remove(0);
+                temp.remove(0);
+            }
+
+        }
+    }
+
+    private void printError(String err) {
+        System.out.print("ERROR: ");
+        System.out.println(err);
+    }
 
 }
