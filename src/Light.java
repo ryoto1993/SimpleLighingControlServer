@@ -9,7 +9,7 @@ public class Light {
     private int signalB = 0;  // 昼白色信号値
 
     private double temperature = 4000;  // 色温度
-    private double lumPct = 500.;       // 光度パーセント
+    private double lumPct = 50.0;       // 光度パーセント
 
     public Light() {
         id = id_counter++;
