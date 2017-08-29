@@ -1,3 +1,6 @@
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -55,6 +58,12 @@ public class SocketServer extends Thread{
         }
     }
 
+    // エラーの実装
+    private void printError(String err) {
+        System.out.print("ERROR: ");
+        System.out.println(err);
+    }
+
     // 動作コマンドの実装
     public void command(ArrayList<String> cmd) {
         String mode = cmd.get(0);
@@ -83,6 +92,10 @@ public class SocketServer extends Thread{
             case "DOWNLIGHT_INDIVIDUAL":
                 System.out.println("Downlight: Individual control");
                 downlightIndividual(cmd.get(1));
+                break;
+            case "GET_LIGHTS":
+                System.out.println("Sending lights via JSON");
+                sendLights();
                 break;
             default:
                 System.out.println("Error: 不明なmode command");
@@ -207,9 +220,23 @@ public class SocketServer extends Thread{
         }
     }
 
-    private void printError(String err) {
-        System.out.print("ERROR: ");
-        System.out.println(err);
+    /**
+     * JSONでlightsを返す
+     * @author Ryoto Tomioka
+     *
+     */
+    private void sendLights() {
+        ObjectMapper mapper = new ObjectMapper();
+        String json = "";
+        try {
+            json = mapper.writeValueAsString(ils.getLights());
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+        }
+
+        System.out.println(json);
     }
+
+
 
 }

@@ -28,6 +28,8 @@ public class Light {
 
     public void setTemperature(double tmp) {this.temperature = tmp;}
 
+    public int getId() { return id; }
+
     public double getLumPct() {
         return lumPct;
     }
