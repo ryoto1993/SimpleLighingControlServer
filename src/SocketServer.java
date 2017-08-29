@@ -1,9 +1,7 @@
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
+import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
@@ -14,13 +12,15 @@ import java.util.ArrayList;
 public class SocketServer extends Thread{
     static final int PORT = 44344;
     static private ILS ils;
+    private ServerSocket serverSocket;
+    private Socket socket;
 
     public SocketServer(ILS ils) {
         this.ils = ils;
     }
     @Override
     public void run() {
-        ServerSocket serverSocket = null;
+        serverSocket = null;
         System.out.println("Server: listening");
 
         try {
@@ -28,7 +28,7 @@ public class SocketServer extends Thread{
             while(true){
                 // System.out.println("Listening...");
                 // 接続があるまでブロック
-                Socket socket = serverSocket.accept();
+                socket = serverSocket.accept();
 
                 BufferedReader br = new BufferedReader(
                         new InputStreamReader(socket.getInputStream()));
@@ -234,7 +234,16 @@ public class SocketServer extends Thread{
             e.printStackTrace();
         }
 
+        // output
         System.out.println(json);
+        try {
+            OutputStream output = socket.getOutputStream();
+            BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(output));
+            bw.write(json);
+            bw.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
 
