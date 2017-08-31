@@ -15,9 +15,9 @@ public class Light {
         id = id_counter++;
     }
 
-    public void setSignal(int a, int b) {
-        signalA = a;
-        signalB = b;
+    public void setSignal(int[] sigs) {
+        signalA = sigs[0];
+        signalB = sigs[1];
     }
 
     public void setLumPct(double pct) {this.lumPct = pct;}
