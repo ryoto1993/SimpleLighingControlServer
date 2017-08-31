@@ -33,12 +33,8 @@ public class SocketServer extends Thread{
                 BufferedReader br = new BufferedReader(
                         new InputStreamReader(socket.getInputStream()));
                 ArrayList<String> cmd = new ArrayList<>();
-                String in;
-                while( (in = br.readLine()) != null ){
-                    // コマンドに追加
-                    cmd.add(in);
-                }
-                command(cmd);
+
+                command(br);
                 if( socket != null){
                     socket.close();
                 }
@@ -65,6 +61,7 @@ public class SocketServer extends Thread{
             OutputStream output = socket.getOutputStream();
             BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(output));
             bw.write(str);
+            bw.flush();
             bw.close();
         } catch (IOException e) {
             e.printStackTrace();
@@ -79,40 +76,46 @@ public class SocketServer extends Thread{
     }
 
     // 動作コマンドの実装
-    public void command(ArrayList<String> cmd) {
-        String mode = cmd.get(0);
-        if(mode == null){
+    public void command(BufferedReader br) {
+        String mode = null;
+        try {
+            mode = br.readLine();
 
-        }else switch(mode){
-            case "MANUAL_SIG-ALL":
-                System.out.println("全照明一括 信号値指定調光");
-                manualSigAll(cmd.get(1));
-                break;
-            case "MANUAL_SIG-INDIVIDUAL":
-                System.out.println("全照明独立 信号値指定調光");
-                manualSigIndividual(cmd.get(1));
-                break;
-            case "MANUAL_ID-SIG":
-                System.out.println("照明ID・信号値指定調光");
-                manualIDSig(cmd.get(1));
-                break;
-            case "MANUAL_ID-RELATIVE":
-                System.out.println("照明ID・相対信号値指定調光");
-                break;
-            case "DOWNLIGHT_ALL":
-                System.out.println("Downlight: All Control");
-                downlightAll(cmd.get(1));
-                break;
-            case "DOWNLIGHT_INDIVIDUAL":
-                System.out.println("Downlight: Individual control");
-                downlightIndividual(cmd.get(1));
-                break;
-            case "GET_LIGHTS":
-                System.out.println("Sending lights via JSON");
-                sendLights();
-                break;
-            default:
-                System.out.println("Error: 不明なmode command");
+            if(mode == null){
+
+            }else switch(mode){
+                case "MANUAL_SIG-ALL":
+                    System.out.println("全照明一括 信号値指定調光");
+                    manualSigAll(br.readLine());
+                    break;
+                case "MANUAL_SIG-INDIVIDUAL":
+                    System.out.println("全照明独立 信号値指定調光");
+                    manualSigIndividual(br.readLine());
+                    break;
+                case "MANUAL_ID-SIG":
+                    System.out.println("照明ID・信号値指定調光");
+                    manualIDSig(br.readLine());
+                    break;
+                case "MANUAL_ID-RELATIVE":
+                    System.out.println("照明ID・相対信号値指定調光");
+                    break;
+                case "DOWNLIGHT_ALL":
+                    System.out.println("Downlight: All Control");
+                    downlightAll(br.readLine());
+                    break;
+                case "DOWNLIGHT_INDIVIDUAL":
+                    System.out.println("Downlight: Individual control");
+                    downlightIndividual(br.readLine());
+                    break;
+                case "GET_LIGHTS":
+                    System.out.println("Sending lights via JSON");
+                    sendLights();
+                    break;
+                default:
+                    System.out.println("Error: 不明なmode command");
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 
