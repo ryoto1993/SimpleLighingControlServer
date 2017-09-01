@@ -74,7 +74,7 @@ public class SocketServer extends Thread{
         sendMessage(str);
     }
 
-    // 動作コマンドの実装
+    // command parser
     public void command(BufferedReader br) {
         String mode = null;
         try {
@@ -118,7 +118,7 @@ public class SocketServer extends Thread{
         }
     }
 
-    // 全照明一括 信号値指定調光
+    // uniform control by signals
     private void manualSigAll(String sigs) {
         if(sigs == null) {
             sendError("Check for data command format.");
@@ -137,7 +137,7 @@ public class SocketServer extends Thread{
 
     }
 
-    // 全照明独立 信号値指定調光
+    // all lights individual control by signals
     private void manualSigIndividual(String sigs) {
         if(sigs == null) {
             sendError("Check for data command formant.");
@@ -156,7 +156,7 @@ public class SocketServer extends Thread{
         sendMessage("OK");
     }
 
-    // 照明ID・信号値指定調光
+    // individual control by id and signals
     private void manualIDSig(String sigs) {
         if(sigs == null) {
             sendError("Check for data command format.");
@@ -239,7 +239,7 @@ public class SocketServer extends Thread{
 
             // dimming
             ils.downlightDimmer.send();
-            sendMessage("OK");
+            sendMessage("OK.");
 
         }
     }
@@ -260,7 +260,5 @@ public class SocketServer extends Thread{
         // output
         sendMessage(json);
     }
-
-
 
 }
