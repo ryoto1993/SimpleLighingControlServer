@@ -167,7 +167,9 @@ public class SocketServer extends Thread{
             System.out.println(s.get(0));
             ils.getLight(s.get(0)).setSignal(s.get(1), s.get(2));
         }
+        // dimming
         ils.downlightDimmer.send();
+        sendMessage("OK");
     }
 
     /**
@@ -190,6 +192,7 @@ public class SocketServer extends Thread{
         }
         // dimming
         ils.downlightDimmer.send();
+        sendMessage("OK.");
     }
 
     /**
@@ -236,6 +239,7 @@ public class SocketServer extends Thread{
 
             // dimming
             ils.downlightDimmer.send();
+            sendMessage("OK");
 
         }
     }
