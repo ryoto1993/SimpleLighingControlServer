@@ -20,6 +20,11 @@ public class Light {
         signalB = sigs[1];
     }
 
+    public void setSignal(int sig_a, int sig_b) {
+        signalA = sig_a;
+        signalB = sig_b;
+    }
+
     public void setLumPct(double pct) {this.lumPct = pct;}
 
     public void setTemperature(double tmp) {this.temperature = tmp;}

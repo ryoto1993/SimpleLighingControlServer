@@ -26,8 +26,7 @@ public class SocketServer extends Thread{
         try {
             serverSocket = new ServerSocket(PORT);
             while(true){
-                // System.out.println("Listening...");
-                // 接続があるまでブロック
+                // listening
                 socket = serverSocket.accept();
 
                 BufferedReader br = new BufferedReader(
@@ -56,7 +55,6 @@ public class SocketServer extends Thread{
 
     // send message to client
     private void sendMessage(String str) {
-        System.out.println(str);
         try {
             OutputStream output = socket.getOutputStream();
             BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(output));
@@ -69,9 +67,10 @@ public class SocketServer extends Thread{
     }
 
     // error
-    private void printError(String err) {
-        String str = "ERROR; ";
+    private void sendError(String err) {
+        String str = "ERROR: ";
         str += err;
+        System.out.println("An error has occurred, " + str);
         sendMessage(str);
     }
 
@@ -122,7 +121,7 @@ public class SocketServer extends Thread{
     // 全照明一括 信号値指定調光
     private void manualSigAll(String sigs) {
         if(sigs == null) {
-            System.out.println("信号値のフォーマットを確認してください");
+            sendError("Check for data command format.");
         } else {
             ArrayList<Integer> s = new ArrayList<>();
             String[] buf = sigs.split(",");
@@ -132,15 +131,16 @@ public class SocketServer extends Thread{
                 l.setSignal(s.get(0), s.get(1));
             }
         }
-        // 調光
+        // dimming
         ils.downlightDimmer.send();
+        sendMessage("OK. ");
 
     }
 
     // 全照明独立 信号値指定調光
     private void manualSigIndividual(String sigs) {
         if(sigs == null) {
-            System.out.println("信号値のフォーマットを確認してください");
+            sendError("Check for data command formant.");
         } else {
             ArrayList<Integer> s = new ArrayList<>();
             String[] buf = sigs.split(",");
@@ -151,13 +151,15 @@ public class SocketServer extends Thread{
                 s.remove(0);
             }
         }
+        // dimming
         ils.downlightDimmer.send();
+        sendMessage("OK");
     }
 
     // 照明ID・信号値指定調光
     private void manualIDSig(String sigs) {
         if(sigs == null) {
-            System.out.println("信号値のフォーマットを確認してください");
+            sendError("Check for data command format.");
         } else {
             ArrayList<Integer> s = new ArrayList<>();
             String[] buf = sigs.split(",");
@@ -169,14 +171,14 @@ public class SocketServer extends Thread{
     }
 
     /**
-     * ダウンライト用 一律調光
+     * for downlight uniform control
      * @author Ryoto Tomioka
-     * @param cmd コマンドのデータコマンド部分
-     * <p>フォーマット: [調光率(0.5%刻み)], [色温度]</p>
+     * @param cmd data command
+     * format: [lumPct (0.5 % inc.)], [color temp.]
      */
     private void downlightAll(String cmd) {
         if(cmd == null) {
-            printError("Check for data command.");
+            sendError("Check for data command.");
         } else {
             ArrayList<Double> data = new ArrayList<>();
             String[] buf = cmd.split(",");
@@ -191,21 +193,22 @@ public class SocketServer extends Thread{
     }
 
     /**
-     * ダウンライト用 ID指定調光
+     * for downlight individual control
      * @author Ryoto Tomioka
-     * @param cmd コマンドのデータコマンド部分
-     * <p>フォーマット: [ID], [調光率(0.5%刻み)], [色温度] の繰り返し</p>
+     * @param cmd data command
+     * format: [ID], [lumPct], [color temp.]*
      */
     private void downlightIndividual(String cmd) {
         if(cmd == null) {
-            printError("Check for data command.");
+            sendError("Check for data command.");
         } else {
             ArrayList<Integer> id = new ArrayList<>();
             ArrayList<Double> lumPct = new ArrayList<>();
             ArrayList<Integer> temp = new ArrayList<>();
 
             String[] buf = cmd.split(",");
-            if(buf.length % 3 != 0) {printError("invalid number of data.");}
+            if(buf.length % 3 != 0) {
+                sendError("invalid number of data.");}
 
             for(int i=0; i<buf.length/3; i++) {
                 int n = i*3;
@@ -214,7 +217,7 @@ public class SocketServer extends Thread{
                     lumPct.add(Double.parseDouble(buf[n + 1]));
                     temp.add(Integer.parseInt(buf[n + 2]));
                 } catch (Exception e) {
-                    printError(e.getMessage());
+                    sendError(e.getMessage());
                     return;
                 }
             }
@@ -238,9 +241,8 @@ public class SocketServer extends Thread{
     }
 
     /**
-     * JSONでlightsを返す
+     * send light object via JSON
      * @author Ryoto Tomioka
-     *
      */
     private void sendLights() {
         ObjectMapper mapper = new ObjectMapper();
