@@ -3,6 +3,7 @@ import gnu.io.SerialPort;
 
 import java.io.*;
 import java.util.ArrayList;
+import java.util.Collections;
 
 /**
  * Created by RyotoTomioka on 2017/08/11.
@@ -133,7 +134,9 @@ public class DownlightDimmer extends Thread{
             System.exit(0x10);
         }
 
-        for(Light l: lights) {
+        for(int i=0; i<lights.size(); i++) {
+            // get light by ID table
+            Light l = lights.get(idTable.get(i)-1);
             // illuminance
             data.add(convertLumToHex(l.getLumPct()));
             // color temperature
@@ -141,8 +144,8 @@ public class DownlightDimmer extends Thread{
             // duration
             data.add(0x00);
             // physical ID 31, 32 can not used
-            if(l.getId()==30) {
-                for(int i=0; i<6; i++) data.add(0x00);
+            if(i==29) {
+                for(int j=0; j<6; j++) data.add(0x00);
             }
         }
 
@@ -151,7 +154,6 @@ public class DownlightDimmer extends Thread{
             data.add(0x00);
             data.add(0x00);
         }
-
     }
 
     // calc Check Bit from data
