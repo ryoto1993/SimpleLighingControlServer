@@ -5,11 +5,11 @@ public class Light {
     static int id_counter = 1;
     private int id;
 
-    private int signalA = 0;  // 白色信号値
-    private int signalB = 0;  // 昼白色信号値
+    private int signalA = 0;  // white signal
+    private int signalB = 0;  // natural signal
 
-    private double temperature = 4000;  // 色温度
-    private double lumPct = 50.0;       // 光度パーセント
+    private double temperature = 4000;  // color temperature
+    private double lumPct = 50.0;       // luminosity percentage
 
     public Light() {
         id = id_counter++;
