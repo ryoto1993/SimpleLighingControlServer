@@ -1,7 +1,7 @@
 import gnu.io.CommPortIdentifier;
 import gnu.io.SerialPort;
 
-import java.io.OutputStream;
+import java.io.*;
 import java.util.ArrayList;
 
 /**
@@ -34,6 +34,8 @@ public class DownlightDimmer extends Thread{
     private CommPortIdentifier portId;
     private SerialPort port;
     private OutputStream out;
+    // id table
+    private ArrayList<Integer> idTable = new ArrayList<>();
 
     // send signals every 1 seconds.
     public void run() {
@@ -59,6 +61,21 @@ public class DownlightDimmer extends Thread{
         } catch (Exception ex) {
             ex.printStackTrace();
         }
+        // set ID table
+        readIDTable();
+    }
+
+    private void readIDTable() {
+        try {
+            File file = new File("id_table.csv");
+            BufferedReader br = new BufferedReader(new FileReader(file));
+
+            String line;
+            while((line = br.readLine()) != null) {
+                String[] data = line.split(",");
+                idTable.add(Integer.parseInt(data[1]));
+            }
+        } catch (IOException e) {}
     }
 
     synchronized public void send() {
