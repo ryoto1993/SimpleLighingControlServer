@@ -107,7 +107,6 @@ public class SocketServer extends Thread{
                     downlightIndividual(br.readLine());
                     break;
                 case "GET_LIGHTS":
-                    System.out.println("Sending lights via JSON");
                     sendLights();
                     break;
                 default:

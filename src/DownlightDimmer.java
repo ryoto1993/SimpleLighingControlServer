@@ -123,9 +123,15 @@ public class DownlightDimmer extends Thread{
             data.add(convertTmpToHex(l.getTemperature()));
             // duration
             data.add(0x00);
+            // physical ID 31, 32 can not used
+            if(l.getId()==30) {
+                data.add(0x00);
+                data.add(0x00);
+                data.add(0x00);
+            }
         }
 
-        for(int i=0; i<64-lights.size(); i++) {
+        for(int i=0; i<64-lights.size()-2; i++) {
             data.add(0x00);
             data.add(0x00);
             data.add(0x00);
