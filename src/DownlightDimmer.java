@@ -125,9 +125,7 @@ public class DownlightDimmer extends Thread{
             data.add(0x00);
             // physical ID 31, 32 can not used
             if(l.getId()==30) {
-                data.add(0x00);
-                data.add(0x00);
-                data.add(0x00);
+                for(int i=0; i<6; i++) data.add(0x00);
             }
         }
 
