@@ -50,7 +50,7 @@ public class InterfaceDimmer {
 
         // 信号値を格納
         for(int i = 0; i<lights.size(); i++) {
-            int[] sig = lights.get(i).getSignal();
+            int[] sig = lights.get(i).getSignals();
             if(NUM_SIGNAL==1) {
                 data[10 + i] = sig[0];
             } else if(NUM_SIGNAL==2) {

@@ -15,12 +15,12 @@ public class Light {
         id = id_counter++;
     }
 
-    public void setSignal(int[] sigs) {
-        signalA = sigs[0];
-        signalB = sigs[1];
+    public void setSignals(int[] signals) {
+        signalA = signals[0];
+        signalB = signals[1];
     }
 
-    public void setSignal(int sig_a, int sig_b) {
+    public void setSignals(int sig_a, int sig_b) {
         signalA = sig_a;
         signalB = sig_b;
     }
@@ -39,8 +39,8 @@ public class Light {
         return temperature;
     }
 
-    public int[] getSignal() {
-        int[] sigs = {signalA, signalB};
-        return sigs;
+    public int[] getSignals() {
+        int[] signals = {signalA, signalB};
+        return signals;
     }
 }
