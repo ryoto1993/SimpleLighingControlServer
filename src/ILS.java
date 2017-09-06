@@ -18,7 +18,7 @@ public class ILS {
         downlightDimmer = new DownlightDimmer(lights);
 
     }
-    public void makeLight(int num) {
+    public void makeLight() {
         try {
             File file = new File("light_layout.csv");
             BufferedReader br = new BufferedReader(new FileReader(file));
@@ -32,10 +32,6 @@ public class ILS {
                 lights.add(light);
             }
         } catch (IOException e) {}
-
-        for(int i=0; i<num; i++) {
-
-        }
     }
 
     public void makeSensor(int num) {

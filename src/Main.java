@@ -4,7 +4,7 @@
 public class Main {
     public static void main(String[] args) {
         ILS ils = new ILS();
-        ils.makeLight(36);
+        ils.makeLight();
         ils.startDimmer();
         ils.startServer();
     }
