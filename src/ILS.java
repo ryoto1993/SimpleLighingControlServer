@@ -26,8 +26,10 @@ public class ILS {
             String line;
             while((line = br.readLine()) != null) {
                 String[] data = line.split(",");
-                lights.add(new Light());
-
+                Light light = new Light();
+                light.setPosX(Double.parseDouble(data[0]));
+                light.setPosY(Double.parseDouble(data[1]));
+                lights.add(light);
             }
         } catch (IOException e) {}
 
