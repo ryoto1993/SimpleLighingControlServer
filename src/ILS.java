@@ -1,3 +1,7 @@
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
+import java.io.IOException;
 import java.util.ArrayList;
 
 /**
@@ -15,10 +19,23 @@ public class ILS {
 
     }
     public void makeLight(int num) {
+        try {
+            File file = new File("light_layout.csv");
+            BufferedReader br = new BufferedReader(new FileReader(file));
+
+            String line;
+            while((line = br.readLine()) != null) {
+                String[] data = line.split(",");
+                lights.add(new Light());
+
+            }
+        } catch (IOException e) {}
+
         for(int i=0; i<num; i++) {
-            lights.add(new Light());
+
         }
     }
+
     public void makeSensor(int num) {
         for(int i=0; i<num; i++) {
             sensors.add(new Sensor());

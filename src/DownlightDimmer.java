@@ -117,7 +117,7 @@ public class DownlightDimmer extends Thread{
                 out.write(i);
             }
         }catch(Exception ex){
-            ex.printStackTrace();
+            // ex.printStackTrace();
         }
 
 
