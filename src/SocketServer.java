@@ -206,7 +206,7 @@ public class SocketServer extends Thread{
         } else {
             ArrayList<Integer> id = new ArrayList<>();
             ArrayList<Double> lumPct = new ArrayList<>();
-            ArrayList<Integer> temp = new ArrayList<>();
+            ArrayList<Double> temp = new ArrayList<>();
 
             String[] buf = cmd.split(",");
             if(buf.length % 3 != 0) {
@@ -217,7 +217,7 @@ public class SocketServer extends Thread{
                 try {
                     id.add(Integer.parseInt(buf[n]));
                     lumPct.add(Double.parseDouble(buf[n + 1]));
-                    temp.add(Integer.parseInt(buf[n + 2]));
+                    temp.add(Double.parseDouble(buf[n + 2]));
                 } catch (Exception e) {
                     sendError(e.getMessage());
                     return;
