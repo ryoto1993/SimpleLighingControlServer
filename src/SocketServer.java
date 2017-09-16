@@ -71,7 +71,7 @@ public class SocketServer extends Thread{
         String str = "ERROR: ";
         str += err;
         System.out.println("An error has occurred, " + str);
-        sendMessage("An error has occurred, " + str);
+        sendMessage("Server: An error has occurred, " + str);
     }
 
     // command parser
